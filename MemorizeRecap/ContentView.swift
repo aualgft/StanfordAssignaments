@@ -13,10 +13,11 @@ struct ContentView: View {
     var body: some View {
         HStack {
             ForEach(model.cards) { card  in
-                CardView(card: card)
+                CardView(card: card, font: self.model.font)
                     .onTapGesture {
                         self.model.chooseCard(card: card)
                 }
+                  .aspectRatio(2/3, contentMode: .fit)
             }
         }
         .foregroundColor(Color.orange)
@@ -26,12 +27,13 @@ struct ContentView: View {
 
 struct CardView: View {
     var card: MemoryGame<String>.Card
+    var font: Font
     var body: some View {
         ZStack {
             if card.isFaceUp {
                 RoundedRectangle(cornerRadius: 10.0).fill(Color.white)
                 RoundedRectangle(cornerRadius: 10.0).stroke(lineWidth: 3)
-                Text(card.content).font(Font.largeTitle)
+                Text(card.content).font(font)
             } else {
                 RoundedRectangle(cornerRadius: 10.0).fill()
             }

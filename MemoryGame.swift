@@ -23,6 +23,7 @@ struct MemoryGame<CardContent> {
             cards.append(Card(isFaceUp: true, isMatched: false, content: cardContent))
             cards.append(Card(isFaceUp: true, isMatched: false, content: cardContent))
         }
+        cards.shuffle()
     }
     
     struct Card: Identifiable {
