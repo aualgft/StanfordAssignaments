@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    var model: EmojiMemoryGame
+  @ObservedObject var model: EmojiMemoryGame
     var body: some View {
         HStack {
             ForEach(model.cards) { card  in
-                CardView(card: card)
+                CardView(card: card).aspectRatio(2/3, contentMode: .fit)
                     .onTapGesture {
                         self.model.chooseCard(card: card)
                 }
@@ -27,16 +27,28 @@ struct ContentView: View {
 struct CardView: View {
     var card: MemoryGame<String>.Card
     var body: some View {
+        GeometryReader { geometry in
+            self.body(for: geometry.size)
+        }
+    }
+    
+    func body(for size: CGSize ) -> some View {
         ZStack {
-            if card.isFaceUp {
-                RoundedRectangle(cornerRadius: 10.0).fill(Color.white)
-                RoundedRectangle(cornerRadius: 10.0).stroke(lineWidth: 3)
-                Text(card.content).font(Font.largeTitle)
+            if self.card.isFaceUp {
+                RoundedRectangle(cornerRadius: self.cornerRadius).fill(Color.white)
+                RoundedRectangle(cornerRadius: self.cornerRadius).stroke(lineWidth: self.lineWidth)
+                Text(self.card.content)
             } else {
                 RoundedRectangle(cornerRadius: 10.0).fill()
             }
         }
+        .font(Font.system(size: min(size.width, size.height) * self.fontMultiplier))
     }
+    
+    // MARK: Drawing Constants
+    var cornerRadius: CGFloat = 10.0
+    var fontMultiplier: CGFloat = 0.75
+    var lineWidth: CGFloat = 3.0
 }
 
 struct ContentView_Previews: PreviewProvider {
