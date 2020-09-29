@@ -11,15 +11,24 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var model: EmojiMemoryGame
     var body: some View {
-        Grid(model.cards) { card  in
-            CardView(card: card)
-                .onTapGesture {
-                    self.model.chooseCard(card: card)
+        VStack {
+            Text(model.title)
+            Text("Points: \(self.model.points)")
+            Grid(model.cards) { card  in
+                CardView(card: card)
+                    .onTapGesture {
+                        self.model.chooseCard(card: card)
+                }
+                .padding()
             }
-        .padding()
+            .foregroundColor(model.color)
+            .padding()
+            Button(action: {
+                self.model.newGame()
+            }) {
+                Text("New Game")
+            }
         }
-        .foregroundColor(Color.orange)
-        .padding()
     }
 }
 
